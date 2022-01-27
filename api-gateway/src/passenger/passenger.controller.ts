@@ -8,12 +8,13 @@ import {
     Put,
   } from '@nestjs/common';
   import { ClientProxySuperFlights } from 'src/common/proxy/client-proxy';
-  import { ApiOperation } from '@nestjs/swagger';
+  import { ApiOperation, ApiTags } from '@nestjs/swagger';
   import { Observable } from 'rxjs';
   import { PassengerInterface } from 'src/common/interfaces/passenger.interface';
   import { PassengerDTO } from './dto/passenger.dto';
   import { PassengerMessage } from 'src/common/consts';
   
+  @ApiTags('passengers')
   @Controller('passenger')
   export class PassengerController {
     constructor(private readonly clientProxy: ClientProxySuperFlights) {}
