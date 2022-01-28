@@ -15,7 +15,7 @@ import {
   import { PassengerMessage } from 'src/common/consts';
   
   @ApiTags('passengers')
-  @Controller('passenger')
+  @Controller('api/passenger')
   export class PassengerController {
     constructor(private readonly clientProxy: ClientProxySuperFlights) {}
   

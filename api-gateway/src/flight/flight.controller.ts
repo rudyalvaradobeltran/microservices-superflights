@@ -17,7 +17,7 @@ import { FlightDTO } from './dto/flight.dto';
 import { FlightMessage, PassengerMessage } from 'src/common/consts';
 
 @ApiTags('flights')
-@Controller('flight')
+@Controller('api/flight')
 export class FlightController {
   constructor(private readonly clientProxy: ClientProxySuperFlights) {}
 

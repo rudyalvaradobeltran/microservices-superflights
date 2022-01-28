@@ -1,1 +1,4 @@
 /api-gateway/node_modules
+/api-gateway/dist
+/microservice-users/node_modules
+/microservice-users/dist

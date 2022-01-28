@@ -5,7 +5,7 @@ import {
   Get,
   Param,
   Post,
-  Put,
+  Put
 } from '@nestjs/common';
 import { ClientProxySuperFlights } from 'src/common/proxy/client-proxy';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -15,7 +15,7 @@ import { UserDTO } from './dto/user.dto';
 import { UserMessage } from 'src/common/consts';
 
 @ApiTags('users')
-@Controller('user')
+@Controller('api/user')
 export class UserController {
   constructor(private readonly clientProxy: ClientProxySuperFlights) {}
 
