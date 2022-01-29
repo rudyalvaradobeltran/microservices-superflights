@@ -2,3 +2,8 @@
 /api-gateway/dist
 /microservice-users/node_modules
 /microservice-users/dist
+/microservice-passengers/node_modules
+/microservice-passengers/dist
+/microservice-flights/node_modules
+/microservice-flights/dist
+/docker-volume

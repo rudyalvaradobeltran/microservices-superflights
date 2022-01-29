@@ -8,6 +8,6 @@ services:
       MONGO_INITDB_ROOT_USERNAME: demo
       MONGO_INITDB_ROOT_PASSWORD: demo
     volumes:
-      - './dockervolume/mongodb:/data/db'
+      - './docker-volume/mongodb:/data/db'
     ports:
       - 27017:27017
