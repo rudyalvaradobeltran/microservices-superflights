@@ -1,15 +1,22 @@
 # Microservices SuperFlights
   
 Proyecto creado en base a curso de Nest.js con microservicios, RabbitMQ y Docker.
+
+## Microservicios
+  
+- api-gateway
+- microservice-flights
+- microservice-passengers
+- microservice-users
   
 ## Correr el proyecto con Docker
   
 - Eliminar .env.development de cada microservicio si es requerido.
 - Configurar AMQP_URL en .env (creado en CloudAMQP).
 - Configurar JWT_SECRET, EXPIRES_IN, PORT y URI_MONGODB si es requerido.
-- Correr docker-compose up --build -d desde directorio base
+- Correr docker-compose up --build -d desde directorio base.
   
-Proyecto se levantará en http://localhost:4000
+Proyecto se levantará en http://localhost:4000 (dependiendo puerto configurado).
   
 ## Endpoints
   
