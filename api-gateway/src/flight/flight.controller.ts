@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { ClientProxySuperFlights } from 'src/common/proxy/client-proxy';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -15,8 +16,10 @@ import { lastValueFrom, Observable } from 'rxjs';
 import { FlightInterface } from 'src/common/interfaces/flight.interface';
 import { FlightDTO } from './dto/flight.dto';
 import { FlightMessage, PassengerMessage } from 'src/common/consts';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @ApiTags('flights')
+@UseGuards(JwtAuthGuard)
 @Controller('api/flight')
 export class FlightController {
   constructor(private readonly clientProxy: ClientProxySuperFlights) {}
@@ -37,7 +40,7 @@ export class FlightController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Find all flights' })
+  @ApiOperation({ summary: 'Find flight by id' })
   findById(@Param('id') id: string): Observable<FlightInterface> {
     return this.clientProxyFlight.send(FlightMessage.FindOne, id);
   }
@@ -65,7 +68,7 @@ export class FlightController {
     @Param('flightId') flightId: string,
     @Param('passengerId') passengerId: string,
   ) {
-      const passenger = await lastValueFrom(this.clientProxyFlight.send(PassengerMessage.FindOne, passengerId));
+      const passenger = await lastValueFrom(this.clientProxyPassenger.send(PassengerMessage.FindOne, passengerId));
       if (!passenger) {
         throw new HttpException('Passenger Not Found', HttpStatus.NOT_FOUND);
       }

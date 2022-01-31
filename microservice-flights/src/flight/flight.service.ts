@@ -1,13 +1,13 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { FlightInterface } from 'src/common/interfaces/flight.interface';
+import { FlightInterface } from '../common/interfaces/flight.interface';
 import { Flight } from 'src/common/models/models';
 import { FlightDTO } from './dto/flight.dto';
 import axios from 'axios';
 import * as moment from 'moment';
-import { LocationInterface } from 'src/common/interfaces/location.interface';
-import { WeatherInterface } from 'src/common/interfaces/wheater.location';
+import { LocationInterface } from '../common/interfaces/location.interface';
+import { WeatherInterface } from '../common/interfaces/wheater.location';
 
 @Injectable()
 export class FlightService {
@@ -44,7 +44,8 @@ export class FlightService {
       airplane,
       destinationCity,
       flightDate,
-      passengers
+      passengers,
+      weather,
     })
   }
 
@@ -64,16 +65,22 @@ export class FlightService {
     return await this.model.find().populate('passengers');
   }
 
-  async findOne(id: string): Promise<FlightInterface> {
-    const flight = await this.model.findById(id).populate('passengers');
-    const location: LocationInterface = await this.getLocation(
-      flight.destinationCity,
-    );
-    const weather: WeatherInterface[] = await this.getWeather(
-      location.woeid,
-      flight.flightDate,
-    );
-    return this.assign(flight, weather);
+  async findOne(id: string): Promise<any> {
+    try {
+      const flight = await this.model.findById(id).populate('passengers');
+      const location: LocationInterface = await this.getLocation(
+        flight.destinationCity,
+      );
+      const weather: WeatherInterface[] = await this.getWeather(
+        location.woeid,
+        flight.flightDate,
+      );
+      const k = this.assign(flight, weather);
+      console.log('k: ', k);
+      return k;
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   async update(id: string, flightDTO: FlightDTO): Promise<FlightInterface> {
@@ -89,6 +96,9 @@ export class FlightService {
     flightId: string,
     passengerId: string,
   ): Promise<FlightInterface> {
+
+    console.log(flightId, passengerId);
+
     return await this.model
       .findByIdAndUpdate(
         flightId,

@@ -33,7 +33,7 @@ export class FlightController {
 
   @MessagePattern(FlightMessage.Update)
   update(@Payload() payload) {
-    return this.flightService.update(payload.id, payload.flightDTO);
+    return this.flightService.update(payload.id, payload.flightDto);
   }
 
   @MessagePattern(FlightMessage.Delete)
@@ -41,15 +41,8 @@ export class FlightController {
     return this.flightService.delete(id);
   }
 
-  @Post(':flightId/passenger/:passengerId')
-  async addPassenger(
-    @Param('flightId') flightId: string,
-    @Param('passengerId') passengerId: string,
-  ) {
-    const passenger = await this.client.findOne(passengerId);
-    if (!passenger) {
-      throw new HttpException('Passenger not found', HttpStatus.NOT_FOUND);
-    }
-    return this.flightService.addPassenger(flightId, passengerId);
+  @MessagePattern(FlightMessage.AddPassenger)
+  addPassenger(@Payload() payload) {
+    return this.flightService.addPassenger(payload.flightId, payload.passengerId);
   }
 }

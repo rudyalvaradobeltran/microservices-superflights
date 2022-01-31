@@ -1,13 +1,84 @@
 version: '3.1'
 services:
+  api-gateway:
+    image: api-gateway-superflights:latest
+    container_name: api-gateway-superflights
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    env_file: .env
+    ports:
+      - 80:3000
+    depends_on:
+      - mongo
+      - rabbitmq
+    restart: always
+    networks:
+      - "ms_nestjs"
+  microservice-flights:
+    image: microservice-flights-superflights:latest
+    container_name: microservice-flights-superflights
+    build:
+      context: ./microservice-flights
+      dockerfile: Dockerfile
+    env_file: .env
+    depends_on:
+      - mongo
+      - rabbitmq
+    restart: always
+    networks:
+      - "ms_nestjs"
+  microservice-passengers:
+    image: microservice-passengers-superflights:latest
+    container_name: microservice-passengers-superflights
+    build:
+      context: ./microservice-passengers
+      dockerfile: Dockerfile
+    env_file: .env
+    depends_on:
+      - mongo
+      - rabbitmq
+    restart: always
+    networks:
+      - "ms_nestjs"
+  microservice-users:
+    image: microservice-users-superflights:latest
+    container_name: microservice-users-superflights
+    build:
+      context: ./microservice-users
+      dockerfile: Dockerfile
+    env_file: .env
+    depends_on:
+      - mongo
+      - rabbitmq
+    restart: always
+    networks:
+      - "ms_nestjs"
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rmq
+    expose:
+      - 5672
+      - 15672
+    restart: always
+    networks: 
+      - "ms_nestjs"
   mongo:
     image: mongo:latest
-    container_name: "mongo"
+    container_name: mongo
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: demo
-      MONGO_INITDB_ROOT_PASSWORD: demo
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+      - MONGO_INITDB_ROOT_USERNAME=demo
+      - MONGO_INITDB_ROOT_PASSWORD=demo
     volumes:
-      - './docker-volume/mongodb:/data/db'
+      - "mongodb:/data/db"
     ports:
-      - 27017:27017
+      - 27017
+    networks: 
+      - "ms_nestjs"
+volumes:
+  mongo:
+networks:
+  ms_nestjs:
